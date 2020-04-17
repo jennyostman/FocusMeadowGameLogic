@@ -14,11 +14,7 @@ public class FlowerService {
     }
 
     public Flower createFlower(Flower flower) {
-
-        System.out.println("createFlower: " + flower.toString());
-
         Flower savedFlower = flowerRepository.save(flower);
         return savedFlower;
-
     }
 }

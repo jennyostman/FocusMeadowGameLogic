@@ -26,10 +26,7 @@ public class FlowerController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, value = "/create")
-    public ResponseEntity<Flower> createFlower(@Valid @NotNull @RequestBody Flower flower,
-                                                   HttpServletRequest request) {
-        String ip = request.getRemoteAddr();
-        flowerService.createFlower(flower);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<Flower> createFlower(@Valid @NotNull @RequestBody Flower flower) {
+        return ResponseEntity.ok().body(flowerService.createFlower(flower));
     }
 }
