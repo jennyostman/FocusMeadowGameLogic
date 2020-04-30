@@ -25,9 +25,13 @@ public class TimerController {
         this.timerService = timerService;
     }
 
+    /**
+     * Saves the received timer and sends out an TimerCountWorkEvent
+     * @param timer
+     * @return
+     */
     @PostMapping(consumes = APPLICATION_JSON_VALUE, value = "/save")
     public ResponseEntity<Boolean> saveTimerSession(@Valid @NotNull @RequestBody Timer timer) {
-        System.out.println("timer: " + timer);
         return ResponseEntity.ok().body(timerService.saveTimerSession(timer));
     }
 }

@@ -1,5 +1,13 @@
 package exarb.fmgamelogic.model;
 
+import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+/**
+ * Model for a timer session
+ */
+@Data
+@Document("timer")
 public class Timer {
 
     private String id;
@@ -15,54 +23,5 @@ public class Timer {
         this.time = time;
         this.workType = workType;
         this.interrupted = interrupted;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public int getTime() {
-        return time;
-    }
-
-    public void setTime(int time) {
-        this.time = time;
-    }
-
-    public boolean isWorkType() {
-        return workType;
-    }
-
-    public void setWorkType(boolean workType) {
-        this.workType = workType;
-    }
-
-    public boolean isInterrupted() {
-        return interrupted;
-    }
-
-    public void setInterrupted(boolean interrupted) {
-        this.interrupted = interrupted;
-    }
-
-    @Override
-    public String toString() {
-        return "Timer{" +
-                "time=" + time +
-                ", isWorkType=" + workType +
-                ", interrupted=" + interrupted +
-                '}';
     }
 }

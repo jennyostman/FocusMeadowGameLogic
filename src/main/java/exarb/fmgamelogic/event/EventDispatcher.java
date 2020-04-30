@@ -20,6 +20,10 @@ public class EventDispatcher {
         this.timerCompletedRoutingKey = timerCompletedRoutingKey;
     }
 
+    /**
+     * Converts and sends theTimerCountWorkEvent
+     * @param timerCountWorkEvent
+     */
     public void send(final TimerCountWorkEvent timerCountWorkEvent) {
         rabbitTemplate.convertAndSend(timerExchange, timerCompletedRoutingKey, timerCountWorkEvent);
     }

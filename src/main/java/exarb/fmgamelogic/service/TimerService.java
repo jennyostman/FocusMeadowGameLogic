@@ -20,6 +20,11 @@ public class TimerService {
         this.timerRepository = timerRepository;
     }
 
+    /**
+     * Saves a timer session and sends out a TimerCountWorkEvent
+     * @param timer
+     * @return
+     */
     @Transactional
     public boolean saveTimerSession(final Timer timer) {
         Timer savedTimerSession = timerRepository.save(timer);
