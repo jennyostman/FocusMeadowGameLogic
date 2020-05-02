@@ -59,7 +59,7 @@ public class RabbitMQConfiguration implements RabbitListenerConfigurer {
     }
 
     /**
-     * Creates a durable Queue for timerCount events.
+     * Creates a durable Queue for user events.
      * @param queueName
      * @return
      */

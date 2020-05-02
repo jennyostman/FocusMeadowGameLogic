@@ -1,8 +1,6 @@
 package exarb.fmgamelogic.controller;
 
-import exarb.fmgamelogic.model.Flower;
 import exarb.fmgamelogic.model.Timer;
-import exarb.fmgamelogic.service.FlowerService;
 import exarb.fmgamelogic.service.TimerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +14,7 @@ import javax.validation.constraints.NotNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/timer", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/timers", produces = APPLICATION_JSON_VALUE)
 public class TimerController {
 
     private TimerService timerService;
@@ -30,7 +28,7 @@ public class TimerController {
      * @param timer
      * @return
      */
-    @PostMapping(consumes = APPLICATION_JSON_VALUE, value = "/save")
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, value = "/timer/save")
     public ResponseEntity<Boolean> saveTimerSession(@Valid @NotNull @RequestBody Timer timer) {
         return ResponseEntity.ok().body(timerService.saveTimerSession(timer));
     }
