@@ -16,10 +16,11 @@ public class EventHandler {
 
     /**
      * Listens to the user queue
-     * @param userLoggedInEvent
+     * @param
      */
     @RabbitListener(queues = "${user.queue}")
     void handleUserLoggedIn(final UserLoggedInEvent userLoggedInEvent) {
+        System.out.println("här tas user-eventet emot");
         log.info("UserLoggedIn Event received: {}", userLoggedInEvent.getUserId());
 
         try {

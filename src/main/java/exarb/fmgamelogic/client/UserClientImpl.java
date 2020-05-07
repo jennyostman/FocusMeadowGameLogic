@@ -23,6 +23,6 @@ public class UserClientImpl implements UserClient {
 
     @Override
     public User retrieveUserById(String userId) {
-        return restTemplate.getForObject(userHost + "/user/" + userId, User.class);
+        return restTemplate.getForObject(userHost + "/users/user/" + userId, User.class);
     }
 }

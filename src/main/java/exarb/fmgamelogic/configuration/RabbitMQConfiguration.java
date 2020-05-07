@@ -23,7 +23,7 @@ public class RabbitMQConfiguration implements RabbitListenerConfigurer {
      * @return TopicExchange
      */
     @Bean
-    public TopicExchange timerDoneExchange(@Value("{timer.exchange}") final String exchangeName) {
+    public TopicExchange timerDoneExchange(@Value("${timerCount.exchange}") final String exchangeName) {
         return new TopicExchange(exchangeName);
     }
 
@@ -54,7 +54,7 @@ public class RabbitMQConfiguration implements RabbitListenerConfigurer {
      * @return TopicExchange
      */
     @Bean
-    public TopicExchange userExchange(@Value("{user.exchange}") final String exchangeName) {
+    public TopicExchange userExchange(@Value("${user.exchange}") final String exchangeName) {
         return new TopicExchange(exchangeName);
     }
 
