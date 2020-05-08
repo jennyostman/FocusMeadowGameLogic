@@ -6,18 +6,18 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import exarb.fmgamelogic.client.dto.User;
+import exarb.fmgamelogic.client.dto.LoginUser;
 
 import java.io.IOException;
 
 /**
  * Deserializes a User coming from the User service into Gamelogics version of User
  */
-public class UserDeserializer  extends JsonDeserializer<User> {
+public class LoginUserDeserializer extends JsonDeserializer<LoginUser> {
     @Override
-    public User deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+    public LoginUser deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
         ObjectCodec oc = jsonParser.getCodec();
         JsonNode node = oc.readTree(jsonParser);
-        return new User(node.get("id").asText(), node.get("userName").asText());
+        return new LoginUser(node.get("id").asText(), node.get("userName").asText());
     }
 }

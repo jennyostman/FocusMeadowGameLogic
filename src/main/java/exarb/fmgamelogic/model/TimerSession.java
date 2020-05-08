@@ -5,26 +5,33 @@ import exarb.fmgamelogic.enums.SessionType;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
+
 /**
- * Model for timer result
+ * Model for a timer session
  */
 @Data
-@Document("timer")
-public class Timer {
+@Document("timerSession")
+public class TimerSession {
 
     private String id;
     private String userId;
     private int time;
     private SessionType sessionType;
     private boolean interrupted;
+    private Date date;
     private FlowerType flowerToPlant;
 
-    public Timer() {
+    public TimerSession() {
     }
 
-    public Timer(int time, SessionType sessionType, boolean interrupted) {
+    public TimerSession(String userId, int time, SessionType sessionType, boolean interrupted, Date date, FlowerType flowerToPlant) {
+        this.userId = userId;
         this.time = time;
         this.sessionType = sessionType;
         this.interrupted = interrupted;
+        this.date = date;
+        this.flowerToPlant = flowerToPlant;
     }
 }

@@ -1,11 +1,11 @@
 package exarb.fmgamelogic.repository;
 
-import exarb.fmgamelogic.model.TimerSession;
+import exarb.fmgamelogic.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface TimerRepository extends MongoRepository<TimerSession, String> {
+public interface UserRepository extends MongoRepository<User, String> {
 
 }
