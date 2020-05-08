@@ -15,8 +15,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserGameDataService {
 
-    private UserGameDataRepository userGameDataRepository;
-    private UserGameDataUtility userGameDataUtility;
+    private final UserGameDataRepository userGameDataRepository;
+    private final UserGameDataUtility userGameDataUtility;
+
 
     /**
      * Creates a new user game data object
@@ -46,10 +47,13 @@ public class UserGameDataService {
      * @param userId a users id
      * @return UserGameData
      */
-    private UserGameData getUserGameDataUsingUserId(String userId) {
+    public UserGameData getUserGameDataUsingUserId(String userId) {
         Optional<UserGameData> userGameData = userGameDataRepository.findUserGameDataByUserId(userId);
         return userGameData.orElseGet(() -> createNewUserGameData(userId));
     }
+
+
+    // TODO: metod som kollar datum
 
 
 }

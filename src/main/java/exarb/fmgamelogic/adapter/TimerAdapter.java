@@ -2,23 +2,25 @@ package exarb.fmgamelogic.adapter;
 
 import exarb.fmgamelogic.model.Timer;
 import exarb.fmgamelogic.model.TimerSession;
+import exarb.fmgamelogic.model.User;
 import exarb.fmgamelogic.model.UserGameData;
 import exarb.fmgamelogic.service.TimerService;
 import exarb.fmgamelogic.service.UserGameDataService;
+import exarb.fmgamelogic.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+@AllArgsConstructor
 @Service
 public class TimerAdapter {
 
     private final TimerService timerService;
     private final UserGameDataService userGameDataService;
+    private final UserService userService;
 
-    public TimerAdapter(TimerService timerService, UserGameDataService userGameDataService) {
-        this.timerService = timerService;
-        this.userGameDataService = userGameDataService;
-    }
+
 
     /**
      * Updates a users game data by adding a new timer session
@@ -32,5 +34,10 @@ public class TimerAdapter {
         System.out.println(savedUserGameData);
         return savedUserGameData;
     }
+
+    public UserGameData getUserGameData(String userId){
+        return userGameDataService.getUserGameDataUsingUserId(userId);
+    }
+
 
 }

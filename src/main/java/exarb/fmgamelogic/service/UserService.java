@@ -16,11 +16,21 @@ public class UserService {
     private LoginUserClient loginUserClient;
     private UserRepository userRepository;
 
-    public void getUserById(String userId) {
+    public void retrieveUserById(String userId) {
         LoginUser loginUser = loginUserClient.retrieveUserById(userId);
         log.info("loginUser {} received from User service", loginUser.getUserName());
 
         User savedUser = userRepository.save(new User(loginUser.getId(), loginUser.getUserName()));
         log.info("User id and userName saved for id: {}", savedUser.getUserId());
     }
+
+    public void saveUser(String userId, String userName){
+        User user = new User();
+        user.setUserId("aaa");
+        user.setUserName("hej");
+        System.out.println("user: " + user);
+        // userRepository.save(new User(userId, userName));
+        userRepository.save(user);
+    }
+
 }

@@ -27,11 +27,8 @@ public class EventHandler {
         log.info("UserLoggedIn Event received: {}", userLoggedInEvent.getUserId());
 
         try {
-            // TODO: ta bort denna:
-            userService.getUserById(userLoggedInEvent.getUserId());
-
+            userService.retrieveUserById(userLoggedInEvent.getUserId());
             userGameDataService.createNewUserGameData(userLoggedInEvent.getUserId());
-
 
         } catch (final Exception e) {
             log.error("Error when trying to process UserWorkCountEvent", e);
