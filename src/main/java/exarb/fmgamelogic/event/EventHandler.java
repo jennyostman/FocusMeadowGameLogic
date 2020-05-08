@@ -1,5 +1,6 @@
 package exarb.fmgamelogic.event;
 
+import exarb.fmgamelogic.service.UserGameDataService;
 import exarb.fmgamelogic.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,18 +14,25 @@ import org.springframework.stereotype.Component;
 public class EventHandler {
 
     private UserService userService;
+    private UserGameDataService userGameDataService;
+
 
     /**
      * Listens to the user queue
-     * @param
+     * @param userLoggedInEvent
      */
     @RabbitListener(queues = "${user.queue}")
     void handleUserLoggedIn(final UserLoggedInEvent userLoggedInEvent) {
-        System.out.println("här tas user-eventet emot");
+        System.out.println("gamelogic rabbitlistener");
         log.info("UserLoggedIn Event received: {}", userLoggedInEvent.getUserId());
 
         try {
+            // TODO: ta bort denna:
             userService.getUserById(userLoggedInEvent.getUserId());
+
+            userGameDataService.createNewUserGameData(userLoggedInEvent.getUserId());
+
+
         } catch (final Exception e) {
             log.error("Error when trying to process UserWorkCountEvent", e);
             // The event will not be re-queued and reprocessed repeatedly if

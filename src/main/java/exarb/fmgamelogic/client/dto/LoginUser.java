@@ -1,25 +1,23 @@
 package exarb.fmgamelogic.client.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import exarb.fmgamelogic.client.UserDeserializer;
+import exarb.fmgamelogic.client.LoginUserDeserializer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-/**
- * Gamelogics version of a User
- */
+
 @RequiredArgsConstructor
 @Getter
 @ToString
 @EqualsAndHashCode
-@JsonDeserialize(using = UserDeserializer.class)
-public class User {
+@JsonDeserialize(using = LoginUserDeserializer.class)
+public class LoginUser {
     private final String id;
     private final String userName;
 
-    public User() {
+    public LoginUser() {
         id = null;
         userName = null;
     }
