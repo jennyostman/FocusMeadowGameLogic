@@ -5,11 +5,15 @@ import exarb.fmgamelogic.enums.FlowerType;
 import exarb.fmgamelogic.model.TimerSession;
 import exarb.fmgamelogic.model.User;
 import exarb.fmgamelogic.model.UserGameData;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
+@Slf4j
 @Component
 public class UserGameDataUtility {
 
@@ -29,17 +33,21 @@ public class UserGameDataUtility {
                 new ArrayList<>(),
                 0,
                 choosableFlower,
-                LocalDate.now());
+                new Date());
         return userGameData;
     }
 
     /**
      * Updates a users game data
-     * @param userGameData a users old game data
+     * @param oldUserGameData a users old game data
      * @param savedTimerSession a users timer session data
      * @return UserGameData
      */
-    public UserGameData updateUserGameData(UserGameData userGameData, TimerSession savedTimerSession){
+    public UserGameData updateUserGameData(UserGameData oldUserGameData, TimerSession savedTimerSession){
+        System.out.println("userGameData: " + oldUserGameData.toString());
+
+        UserGameData userGameData = prepareUserGameDataForNewDay(oldUserGameData);
+
         List<FlowerType> newFocusTimeFlowers = addItemToBePlacedOnMeadow(savedTimerSession, userGameData.getFocusTimeFlowers());
         userGameData.setFocusTimeFlowers(newFocusTimeFlowers);
 
@@ -56,7 +64,55 @@ public class UserGameDataUtility {
             int earnedCoins = calculateAmountOfCoins(savedTimerSession.getTime());
             userGameData.setCoins(userGameData.getCoins() + earnedCoins);
         }
+
+        userGameData.setUpdated(new Date());
+
         return userGameData;
+    }
+
+    /**
+     * prepares a game user data object for a new gaming day
+     * @param userGameData a users game data
+     * @return UserGameData
+     */
+    public UserGameData prepareUserGameDataForNewDay(UserGameData userGameData){
+        if (!isUpdatedToday(userGameData)){
+            userGameData.setMinutesThisDay(0);
+            userGameData.setFocusTimeFlowers(new ArrayList<>());
+            userGameData.setMeadow(new ArrayList<>());
+            userGameData.setEarnedHours(0);
+            userGameData.setEarnedMinutes(0);
+            System.out.println("userGameData efter nollställning: " + userGameData.toString());
+        }
+        return userGameData;
+    }
+
+    /**
+     * checks if the user game data is updated today
+     * @param userGameData a users game data
+     * @return boolean
+     */
+    public boolean isUpdatedToday(UserGameData userGameData){
+        LocalDate lastUpdatedDate = convertToLocalDateViaMilisecond(userGameData.getUpdated());
+
+        // Test
+        // lastUpdatedDate = LocalDate.of(2017, 10, 28);
+
+        LocalDate todaysDate = LocalDate.now();
+        System.out.println("lastUpdatedDate: " + lastUpdatedDate);
+        System.out.println("todaysDate: " + todaysDate);
+        return lastUpdatedDate.equals(todaysDate);
+    }
+
+    /**
+     * converts java.util.date to LocalDate
+     * @param dateToConvert java.util.date to convert
+     * @return LocalDate
+     */
+    public LocalDate convertToLocalDateViaMilisecond(Date dateToConvert) {
+        return Instant.ofEpochMilli(dateToConvert.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 
     /**
@@ -97,27 +153,35 @@ public class UserGameDataUtility {
         int sizeOfMeadow = x * x;
         List<FlowerType> meadow = new ArrayList<>();
 
+        List<FlowerType> focusTimeFlowers = adjustIfFlowersTooManyForMeadow(newFocusTimeFlowers, sizeOfMeadow);
 
-
-        if (newFocusTimeFlowers.size() <= sizeOfMeadow){
-            int amountOfGrassToFillUpWith = sizeOfMeadow - newFocusTimeFlowers.size();
-
-            System.out.println("antal gräs: " + amountOfGrassToFillUpWith);
-            for (int i = 0; i < amountOfGrassToFillUpWith; i++) {
-                meadow.add(FlowerType.GRASS);
-            }
-
-            System.out.println("antal blommor: " + newFocusTimeFlowers.size());
-            meadow.addAll(newFocusTimeFlowers);
-            System.out.println("meadow.size(): " + meadow.size());
-
-            Collections.shuffle(meadow);
+        int amountOfGrassToFillUpWith = sizeOfMeadow - focusTimeFlowers.size();
+        for (int i = 0; i < amountOfGrassToFillUpWith; i++) {
+            meadow.add(FlowerType.GRASS);
         }
-        else {
-            // TODO: throw MeadowToSmallException
-        }
+        meadow.addAll(focusTimeFlowers);
+        Collections.shuffle(meadow);
 
         return meadow;
+    }
+
+    /**
+     * Checks if amount of earned items are to many for the meadow. If so, removes items until they fit.
+     * @param newFocusTimeFlowers list of earned items
+     * @param sizeOfMeadow size of meadow
+     * @return List<FlowerType>
+     */
+    private List<FlowerType> adjustIfFlowersTooManyForMeadow(List<FlowerType> newFocusTimeFlowers, int sizeOfMeadow){
+        if (newFocusTimeFlowers.size() > sizeOfMeadow){
+            boolean toLarge = true;
+            while (toLarge){
+                newFocusTimeFlowers.remove(0);
+                if (newFocusTimeFlowers.size() == sizeOfMeadow){
+                    toLarge = false;
+                }
+            }
+        }
+        return newFocusTimeFlowers;
     }
 
     /**
@@ -130,6 +194,11 @@ public class UserGameDataUtility {
         return oldTotal + minutesToAdd;
     }
 
+    /**
+     * Divides the total of focused minutes into hours and minutes
+     * @param newTotalOfMinutes total minutes of focus
+     * @return Map<String, Integer>
+     */
     private Map<String, Integer> divideTotalMinutesIntoHoursAndMinutes(int newTotalOfMinutes){
         Map<String, Integer> hoursAndMinutes = new HashMap<>();
         int hours = newTotalOfMinutes / 60;
@@ -140,7 +209,7 @@ public class UserGameDataUtility {
     }
 
     /**
-     * calculates how many coins the user has earned based on new focus time
+     * calculates how many coins the user has earned based on focus time
      * @param focusTime amount of minutes a user focused
      * @return integer
      */

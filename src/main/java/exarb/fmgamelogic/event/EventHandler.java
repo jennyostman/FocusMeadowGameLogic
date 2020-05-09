@@ -20,7 +20,6 @@ public class EventHandler {
      */
     @RabbitListener(queues = "${user.queue}")
     void handleUserLoggedIn(final UserRegisteredEvent userRegisteredEvent) {
-        System.out.println("tar emot event efter registrering");
         log.info("UserRegisteredEvent received: {}", userRegisteredEvent.getUserId());
 
         try {
