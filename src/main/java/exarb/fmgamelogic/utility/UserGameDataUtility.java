@@ -8,7 +8,9 @@ import exarb.fmgamelogic.model.UserGameData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 @Slf4j
@@ -31,17 +33,21 @@ public class UserGameDataUtility {
                 new ArrayList<>(),
                 0,
                 choosableFlower,
-                LocalDate.now());
+                new Date());
         return userGameData;
     }
 
     /**
      * Updates a users game data
-     * @param userGameData a users old game data
+     * @param oldUserGameData a users old game data
      * @param savedTimerSession a users timer session data
      * @return UserGameData
      */
-    public UserGameData updateUserGameData(UserGameData userGameData, TimerSession savedTimerSession){
+    public UserGameData updateUserGameData(UserGameData oldUserGameData, TimerSession savedTimerSession){
+        System.out.println("userGameData: " + oldUserGameData.toString());
+
+        UserGameData userGameData = prepareUserGameDataForNewDay(oldUserGameData);
+
         List<FlowerType> newFocusTimeFlowers = addItemToBePlacedOnMeadow(savedTimerSession, userGameData.getFocusTimeFlowers());
         userGameData.setFocusTimeFlowers(newFocusTimeFlowers);
 
@@ -58,7 +64,55 @@ public class UserGameDataUtility {
             int earnedCoins = calculateAmountOfCoins(savedTimerSession.getTime());
             userGameData.setCoins(userGameData.getCoins() + earnedCoins);
         }
+
+        userGameData.setUpdated(new Date());
+
         return userGameData;
+    }
+
+    /**
+     * prepares a game user data object for a new gaming day
+     * @param userGameData a users game data
+     * @return UserGameData
+     */
+    public UserGameData prepareUserGameDataForNewDay(UserGameData userGameData){
+        if (!isUpdatedToday(userGameData)){
+            userGameData.setMinutesThisDay(0);
+            userGameData.setFocusTimeFlowers(new ArrayList<>());
+            userGameData.setMeadow(new ArrayList<>());
+            userGameData.setEarnedHours(0);
+            userGameData.setEarnedMinutes(0);
+            System.out.println("userGameData efter nollställning: " + userGameData.toString());
+        }
+        return userGameData;
+    }
+
+    /**
+     * checks if the user game data is updated today
+     * @param userGameData a users game data
+     * @return boolean
+     */
+    public boolean isUpdatedToday(UserGameData userGameData){
+        LocalDate lastUpdatedDate = convertToLocalDateViaMilisecond(userGameData.getUpdated());
+
+        // Test
+        lastUpdatedDate = LocalDate.of(2017, 10, 28);
+
+        LocalDate todaysDate = LocalDate.now();
+        System.out.println("lastUpdatedDate: " + lastUpdatedDate);
+        System.out.println("todaysDate: " + todaysDate);
+        return lastUpdatedDate.equals(todaysDate);
+    }
+
+    /**
+     * converts java.util.date to LocalDate
+     * @param dateToConvert java.util.date to convert
+     * @return LocalDate
+     */
+    public LocalDate convertToLocalDateViaMilisecond(Date dateToConvert) {
+        return Instant.ofEpochMilli(dateToConvert.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 
     /**
@@ -122,7 +176,6 @@ public class UserGameDataUtility {
             boolean toLarge = true;
             while (toLarge){
                 newFocusTimeFlowers.remove(0);
-                System.out.println("ta bort blommor-size: " + newFocusTimeFlowers.size());
                 if (newFocusTimeFlowers.size() == sizeOfMeadow){
                     toLarge = false;
                 }

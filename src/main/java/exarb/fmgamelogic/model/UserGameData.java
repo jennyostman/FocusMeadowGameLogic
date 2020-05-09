@@ -4,7 +4,7 @@ import exarb.fmgamelogic.enums.FlowerType;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 
@@ -22,7 +22,7 @@ public class UserGameData {
     // private List<Achievement> achievements;  // Lista med de man tilldelats
     private List<FlowerType> choosableFlowers;
     // Så att man uppdaterar den som är för dagen, och kan radera den som är för igår.
-    private LocalDate updated;
+    private Date updated;
     private int earnedHours;
     private int earnedMinutes;
 
@@ -31,7 +31,7 @@ public class UserGameData {
     }
 
     public UserGameData(String userId, String userName, int minutesThisDay, List<FlowerType> focusTimeFlowers,
-                        int coins, List<FlowerType> choosableFlowers, LocalDate updated) {
+                        int coins, List<FlowerType> choosableFlowers, Date updated) {
         this.userId = userId;
         this.userName = userName;
         this.minutesThisDay = minutesThisDay;

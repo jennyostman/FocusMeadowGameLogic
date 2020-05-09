@@ -4,7 +4,6 @@ import exarb.fmgamelogic.enums.FlowerType;
 import exarb.fmgamelogic.event.EventDispatcher;
 import exarb.fmgamelogic.event.TimerCountWorkEvent;
 import exarb.fmgamelogic.exceptions.TimerSessionException;
-import exarb.fmgamelogic.exceptions.UserGameDataException;
 import exarb.fmgamelogic.model.Timer;
 import exarb.fmgamelogic.model.TimerSession;
 import exarb.fmgamelogic.repository.TimerRepository;
@@ -13,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.Optional;
 
 
@@ -68,7 +66,7 @@ public class TimerService {
     private TimerSession convertToTimerSession(final Timer timer, String userId){
         return new TimerSession(userId, timer.getTime(),
                 timer.getSessionType(), timer.isInterrupted(),
-                new Date(), timer.getFlowerToPlant());
+                timer.getFlowerToPlant());
     }
 
 }

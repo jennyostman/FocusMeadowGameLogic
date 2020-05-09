@@ -31,7 +31,6 @@ public class TimerController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, value = "/timer/save")
     public ResponseEntity<UserGameData> addingNewTimerSessionToUserGameData(@RequestHeader String userId,
                                                                             @Valid @NotNull @RequestBody Timer timer) {
-        System.out.println("userId: " + userId);
         return ResponseEntity.ok().body(timerAdapter.updatesUserGameData(timer, userId));
     }
 

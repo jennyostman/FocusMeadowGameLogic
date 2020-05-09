@@ -26,12 +26,12 @@ public class TimerSession {
     public TimerSession() {
     }
 
-    public TimerSession(String userId, int time, SessionType sessionType, boolean interrupted, Date date, FlowerType flowerToPlant) {
+    public TimerSession(String userId, int time, SessionType sessionType, boolean interrupted, FlowerType flowerToPlant) {
         this.userId = userId;
         this.time = time;
         this.sessionType = sessionType;
         this.interrupted = interrupted;
-        this.date = date;
+        this.date = new Date();
         this.flowerToPlant = flowerToPlant;
     }
 }

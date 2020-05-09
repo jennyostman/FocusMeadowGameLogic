@@ -24,10 +24,8 @@ public class TimerAdapter {
      * @return UserGameData
      */
     public UserGameData updatesUserGameData(final Timer timer, String userId){
-        System.out.println("timerAdapter updatesUserGameData");
         TimerSession savedTimerSession = timerService.saveTimerSession(timer, userId);
         UserGameData savedUserGameData = userGameDataService.updateUserGameData(savedTimerSession, userId);
-        System.out.println(savedUserGameData);
         return savedUserGameData;
     }
 
