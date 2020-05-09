@@ -12,12 +12,13 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserService {
 
+    /**
+     * converts LoginUser object to User object
+     * @param loginUser a loginUser object
+     * @return User
+     */
     public User fromLoginUserToUser(LoginUser loginUser){
-        User user = new User();
-        user.setUserId(loginUser.getId());
-        user.setUserName(loginUser.getUserName());
-        System.out.println("user: " + user);
-        return user;
+        return new User(loginUser.getId(), loginUser.getUserName());
     }
 
 }

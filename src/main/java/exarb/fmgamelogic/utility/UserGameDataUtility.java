@@ -5,11 +5,13 @@ import exarb.fmgamelogic.enums.FlowerType;
 import exarb.fmgamelogic.model.TimerSession;
 import exarb.fmgamelogic.model.User;
 import exarb.fmgamelogic.model.UserGameData;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.*;
 
+@Slf4j
 @Component
 public class UserGameDataUtility {
 
@@ -97,27 +99,36 @@ public class UserGameDataUtility {
         int sizeOfMeadow = x * x;
         List<FlowerType> meadow = new ArrayList<>();
 
+        List<FlowerType> focusTimeFlowers = adjustIfFlowersTooManyForMeadow(newFocusTimeFlowers, sizeOfMeadow);
 
-
-        if (newFocusTimeFlowers.size() <= sizeOfMeadow){
-            int amountOfGrassToFillUpWith = sizeOfMeadow - newFocusTimeFlowers.size();
-
-            System.out.println("antal gräs: " + amountOfGrassToFillUpWith);
-            for (int i = 0; i < amountOfGrassToFillUpWith; i++) {
-                meadow.add(FlowerType.GRASS);
-            }
-
-            System.out.println("antal blommor: " + newFocusTimeFlowers.size());
-            meadow.addAll(newFocusTimeFlowers);
-            System.out.println("meadow.size(): " + meadow.size());
-
-            Collections.shuffle(meadow);
+        int amountOfGrassToFillUpWith = sizeOfMeadow - focusTimeFlowers.size();
+        for (int i = 0; i < amountOfGrassToFillUpWith; i++) {
+            meadow.add(FlowerType.GRASS);
         }
-        else {
-            // TODO: throw MeadowToSmallException
-        }
+        meadow.addAll(focusTimeFlowers);
+        Collections.shuffle(meadow);
 
         return meadow;
+    }
+
+    /**
+     * Checks if amount of earned items are to many for the meadow. If so, removes items until they fit.
+     * @param newFocusTimeFlowers list of earned items
+     * @param sizeOfMeadow size of meadow
+     * @return List<FlowerType>
+     */
+    private List<FlowerType> adjustIfFlowersTooManyForMeadow(List<FlowerType> newFocusTimeFlowers, int sizeOfMeadow){
+        if (newFocusTimeFlowers.size() > sizeOfMeadow){
+            boolean toLarge = true;
+            while (toLarge){
+                newFocusTimeFlowers.remove(0);
+                System.out.println("ta bort blommor-size: " + newFocusTimeFlowers.size());
+                if (newFocusTimeFlowers.size() == sizeOfMeadow){
+                    toLarge = false;
+                }
+            }
+        }
+        return newFocusTimeFlowers;
     }
 
     /**
@@ -130,6 +141,11 @@ public class UserGameDataUtility {
         return oldTotal + minutesToAdd;
     }
 
+    /**
+     * Divides the total of focused minutes into hours and minutes
+     * @param newTotalOfMinutes total minutes of focus
+     * @return Map<String, Integer>
+     */
     private Map<String, Integer> divideTotalMinutesIntoHoursAndMinutes(int newTotalOfMinutes){
         Map<String, Integer> hoursAndMinutes = new HashMap<>();
         int hours = newTotalOfMinutes / 60;
@@ -140,7 +156,7 @@ public class UserGameDataUtility {
     }
 
     /**
-     * calculates how many coins the user has earned based on new focus time
+     * calculates how many coins the user has earned based on focus time
      * @param focusTime amount of minutes a user focused
      * @return integer
      */

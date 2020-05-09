@@ -5,15 +5,12 @@ import exarb.fmgamelogic.model.Timer;
 import exarb.fmgamelogic.model.TimerSession;
 import exarb.fmgamelogic.model.UserGameData;
 import exarb.fmgamelogic.service.TimerService;
-import exarb.fmgamelogic.service.UserGameDataService;
-import exarb.fmgamelogic.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.websocket.server.PathParam;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -24,11 +21,10 @@ public class TimerController {
 
     private final TimerAdapter timerAdapter;
     private final TimerService timerService;
-    private final UserService userService;
 
 
     /**
-     * - - - -
+     * Updates user game data when a new timer session is added
      * @param timer, a Timer object containing the result from a timer session
      * @return ResponseEntity<UserGameData> A users game data
      */
@@ -39,11 +35,15 @@ public class TimerController {
         return ResponseEntity.ok().body(timerAdapter.updatesUserGameData(timer, userId));
     }
 
+    /**
+     * Get a users game data
+     * @param userId a users id
+     * @return ResponseEntity<UserGameData>
+     */
     @GetMapping(value = "/game/{userId}")
     public ResponseEntity<UserGameData> getUserGameDataByUserId(@PathVariable String userId){
         return ResponseEntity.ok().body(timerAdapter.getUserGameDataByUserId(userId));
     }
-
 
     /**
      * Gets a TimerSession object from an id
@@ -52,7 +52,7 @@ public class TimerController {
      */
     @GetMapping(value = "/result/{timerCountSessionId}")
     public ResponseEntity<TimerSession> getTimerResultForTimerCountSessionId(@PathVariable String timerCountSessionId) {
-        return ResponseEntity.ok().body(timerService.getTimerResultForUser(timerCountSessionId));
+        return ResponseEntity.ok().body(timerService.getTimerResultById(timerCountSessionId));
     }
 
 }

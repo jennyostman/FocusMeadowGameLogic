@@ -1,5 +1,6 @@
 package exarb.fmgamelogic.service;
 
+import exarb.fmgamelogic.exceptions.UserGameDataException;
 import exarb.fmgamelogic.model.TimerSession;
 import exarb.fmgamelogic.model.User;
 import exarb.fmgamelogic.model.UserGameData;
@@ -21,9 +22,8 @@ public class UserGameDataService {
 
 
     /**
-     * Creates a new user game data object
+     * Creates a new user game data object and saves it
      * @param user user object
-     * @return UserGameData
      */
     public void createNewUserGameData(User user){
         UserGameData userGameData = userGameDataUtility.createNewUserGameData(user);
@@ -33,14 +33,13 @@ public class UserGameDataService {
 
     /**
      * Updates a users game data by adding data from a new TimerSession.
-     * @param savedTimerSession timer session data with date
+     * @param savedTimerSession timer session data
      * @return UserGameData
      */
     public UserGameData updateUserGameData(TimerSession savedTimerSession, String userId){
         UserGameData oldUserGameData = getUserGameDataByUserId(userId);
         UserGameData updatedUserGameData = userGameDataUtility.updateUserGameData(oldUserGameData, savedTimerSession);
         UserGameData savedUserGameData = userGameDataRepository.save(updatedUserGameData);
-        System.out.println(savedUserGameData);
         log.info("Updated UserGameData for {}", userId);
         return savedUserGameData;
     }
@@ -57,8 +56,7 @@ public class UserGameDataService {
         }
         else {
             log.info("No UserGameData was found for id {}", userId);
-            // TODO: skicka exception
-            return null;
+            throw new UserGameDataException("Game data was not found");
         }
     }
 
