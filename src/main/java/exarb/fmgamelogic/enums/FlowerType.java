@@ -1,5 +1,5 @@
 package exarb.fmgamelogic.enums;
 
 public enum FlowerType {
-    GRASS, PILEOFDIRT, SUNFLOWER
+    GRASS, PILEOFDIRT, SUNFLOWER, PANSY
 }

@@ -5,15 +5,15 @@ import java.io.Serializable;
 /**
  * This is a model for an event that is sent when a user has logged in successfully.
  */
-public class UserLoggedInEvent implements Serializable {
+public class UserRegisteredEvent implements Serializable {
 
     private String userId;
 
-    public UserLoggedInEvent(String userId) {
+    public UserRegisteredEvent(String userId) {
         this.userId = userId;
     }
 
-    public UserLoggedInEvent() {
+    public UserRegisteredEvent() {
     }
 
     public String getUserId() {

@@ -1,7 +1,6 @@
 package exarb.fmgamelogic.event;
 
-import exarb.fmgamelogic.service.UserGameDataService;
-import exarb.fmgamelogic.service.UserService;
+import exarb.fmgamelogic.adapter.UserAdapter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
@@ -13,23 +12,19 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class EventHandler {
 
-    private UserService userService;
-    private UserGameDataService userGameDataService;
-
+    private UserAdapter userAdapter;
 
     /**
      * Listens to the user queue
-     * @param userLoggedInEvent
+     * @param userRegisteredEvent event message object with registered user
      */
     @RabbitListener(queues = "${user.queue}")
-    void handleUserLoggedIn(final UserLoggedInEvent userLoggedInEvent) {
-        System.out.println("gamelogic rabbitlistener");
-        log.info("UserLoggedIn Event received: {}", userLoggedInEvent.getUserId());
+    void handleUserLoggedIn(final UserRegisteredEvent userRegisteredEvent) {
+        System.out.println("tar emot event efter registrering");
+        log.info("UserRegisteredEvent received: {}", userRegisteredEvent.getUserId());
 
         try {
-            userService.retrieveUserById(userLoggedInEvent.getUserId());
-            userGameDataService.createNewUserGameData(userLoggedInEvent.getUserId());
-
+            userAdapter.createUserGameDataForNewUser(userRegisteredEvent.getUserId());
         } catch (final Exception e) {
             log.error("Error when trying to process UserWorkCountEvent", e);
             // The event will not be re-queued and reprocessed repeatedly if
