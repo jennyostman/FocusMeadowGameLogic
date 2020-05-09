@@ -43,6 +43,7 @@ public class TimerService {
      */
     @Transactional
     public TimerSession saveTimerSession(final Timer timer, String userId) {
+        System.out.println("TimerService saveTimerSession");
         // TODO: Väljer blomma att plantera här just nu
         timer.setFlowerToPlant(FlowerType.SUNFLOWER);
 

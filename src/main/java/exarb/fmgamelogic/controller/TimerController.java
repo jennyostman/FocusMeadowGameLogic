@@ -33,19 +33,15 @@ public class TimerController {
      * @return ResponseEntity<UserGameData> A users game data
      */
     @PostMapping(consumes = APPLICATION_JSON_VALUE, value = "/timer/save")
-    public ResponseEntity<UserGameData> updatesUserGameDataByAddingNewTimerSession(@RequestHeader String userId,
-                                                                                   @Valid @NotNull @RequestBody Timer timer) {
-
-        // userService.saveUser("bbb", "hej");
-
+    public ResponseEntity<UserGameData> addingNewTimerSessionToUserGameData(@RequestHeader String userId,
+                                                                            @Valid @NotNull @RequestBody Timer timer) {
+        System.out.println("userId: " + userId);
         return ResponseEntity.ok().body(timerAdapter.updatesUserGameData(timer, userId));
     }
 
     @GetMapping(value = "/game/{userId}")
-    public ResponseEntity<UserGameData> getUserGameDataByUserId(@PathVariable String userId){  //
-        System.out.println("i getUserGameDataByUserId");
-        System.out.println("userId" + userId);
-        return ResponseEntity.ok().body(timerAdapter.getUserGameData(userId));
+    public ResponseEntity<UserGameData> getUserGameDataByUserId(@PathVariable String userId){
+        return ResponseEntity.ok().body(timerAdapter.getUserGameDataByUserId(userId));
     }
 
 

@@ -3,6 +3,7 @@ package exarb.fmgamelogic.utility;
 
 import exarb.fmgamelogic.enums.FlowerType;
 import exarb.fmgamelogic.model.TimerSession;
+import exarb.fmgamelogic.model.User;
 import exarb.fmgamelogic.model.UserGameData;
 import org.springframework.stereotype.Component;
 
@@ -15,38 +16,20 @@ public class UserGameDataUtility {
 
     /**
      * Creates a new user game data object
-     * @param userId a users id
+     * @param user a users data
      * @return UserGameData
      */
-    public UserGameData createNewUserGameData(String userId){
-
-        String userName = "abc";
-
+    public UserGameData createNewUserGameData(User user){
         List<FlowerType> choosableFlower = new ArrayList<>();
         choosableFlower.add(FlowerType.SUNFLOWER);
         UserGameData userGameData = new UserGameData(
-                userId,
-                userName,
+                user.getUserId(),
+                user.getUserName(),
                 0,
                 new ArrayList<>(),
                 0,
                 choosableFlower,
                 LocalDate.now());
-
-
-        // BÖR GÖRAS VID INLOGG?
-        // Måste göras även under tiden man är inloggad.
-        // En koll varje gång men hämtar en UserGameData?
-        // Måste skapas/uppdateras när man loggar in + när man är klar med en timerSession
-
-        // När det är en ny dag: Skapa en ny UserGameData, där
-        // int minutesThisDay,
-        // List<FlowerType> flowersOnMeadow,
-        // FlowerType[][] meadow
-        // är tomma.
-        // Ta bort den gamla UserGameData, och ersätt med den nya.
-
-
         return userGameData;
     }
 

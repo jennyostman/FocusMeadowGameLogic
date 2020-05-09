@@ -9,7 +9,6 @@ import exarb.fmgamelogic.service.UserGameDataService;
 import exarb.fmgamelogic.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @AllArgsConstructor
@@ -18,8 +17,6 @@ public class TimerAdapter {
 
     private final TimerService timerService;
     private final UserGameDataService userGameDataService;
-    private final UserService userService;
-
 
 
     /**
@@ -29,14 +26,15 @@ public class TimerAdapter {
      * @return UserGameData
      */
     public UserGameData updatesUserGameData(final Timer timer, String userId){
+        System.out.println("timerAdapter updatesUserGameData");
         TimerSession savedTimerSession = timerService.saveTimerSession(timer, userId);
-        UserGameData savedUserGameData = userGameDataService.updateUserGameData(savedTimerSession);
+        UserGameData savedUserGameData = userGameDataService.updateUserGameData(savedTimerSession, userId);
         System.out.println(savedUserGameData);
         return savedUserGameData;
     }
 
-    public UserGameData getUserGameData(String userId){
-        return userGameDataService.getUserGameDataUsingUserId(userId);
+    public UserGameData getUserGameDataByUserId(String userId){
+        return userGameDataService.getUserGameDataByUserId(userId);
     }
 
 

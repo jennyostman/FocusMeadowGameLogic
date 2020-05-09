@@ -1,6 +1,7 @@
 package exarb.fmgamelogic.service;
 
 import exarb.fmgamelogic.model.TimerSession;
+import exarb.fmgamelogic.model.User;
 import exarb.fmgamelogic.model.UserGameData;
 import exarb.fmgamelogic.repository.UserGameDataRepository;
 import exarb.fmgamelogic.utility.UserGameDataUtility;
@@ -21,12 +22,13 @@ public class UserGameDataService {
 
     /**
      * Creates a new user game data object
-     * @param userId a users id
+     * @param user user object
      * @return UserGameData
      */
-    public UserGameData createNewUserGameData(String userId){
-        UserGameData userGameData = userGameDataUtility.createNewUserGameData(userId);
-        return userGameDataRepository.save(userGameData);
+    public void createNewUserGameData(User user){
+        UserGameData userGameData = userGameDataUtility.createNewUserGameData(user);
+        UserGameData savedUserGameData = userGameDataRepository.save(userGameData);
+        log.info("Saved new UserGameData {}", savedUserGameData);
     }
 
     /**
@@ -34,11 +36,12 @@ public class UserGameDataService {
      * @param savedTimerSession timer session data with date
      * @return UserGameData
      */
-    public UserGameData updateUserGameData(TimerSession savedTimerSession){
-        UserGameData oldUserGameData = getUserGameDataUsingUserId(savedTimerSession.getUserId());
+    public UserGameData updateUserGameData(TimerSession savedTimerSession, String userId){
+        UserGameData oldUserGameData = getUserGameDataByUserId(userId);
         UserGameData updatedUserGameData = userGameDataUtility.updateUserGameData(oldUserGameData, savedTimerSession);
         UserGameData savedUserGameData = userGameDataRepository.save(updatedUserGameData);
         System.out.println(savedUserGameData);
+        log.info("Updated UserGameData for {}", userId);
         return savedUserGameData;
     }
 
@@ -47,13 +50,16 @@ public class UserGameDataService {
      * @param userId a users id
      * @return UserGameData
      */
-    public UserGameData getUserGameDataUsingUserId(String userId) {
+    public UserGameData getUserGameDataByUserId(String userId) {
         Optional<UserGameData> userGameData = userGameDataRepository.findUserGameDataByUserId(userId);
-        return userGameData.orElseGet(() -> createNewUserGameData(userId));
+        if (userGameData.isPresent()){
+            return userGameData.get();
+        }
+        else {
+            log.info("No UserGameData was found for id {}", userId);
+            // TODO: skicka exception
+            return null;
+        }
     }
-
-
-    // TODO: metod som kollar datum
-
 
 }
