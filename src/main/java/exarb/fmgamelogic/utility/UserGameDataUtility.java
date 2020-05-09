@@ -96,7 +96,7 @@ public class UserGameDataUtility {
         LocalDate lastUpdatedDate = convertToLocalDateViaMilisecond(userGameData.getUpdated());
 
         // Test
-        lastUpdatedDate = LocalDate.of(2017, 10, 28);
+        // lastUpdatedDate = LocalDate.of(2017, 10, 28);
 
         LocalDate todaysDate = LocalDate.now();
         System.out.println("lastUpdatedDate: " + lastUpdatedDate);
