@@ -41,11 +41,11 @@ public class UserGameDataService {
      * @param savedTimerSession timer session data
      * @return UserGameData
      */
-    public UserGameData updateUserGameData(TimerSession savedTimerSession, String userId){
-        UserGameData oldUserGameData = getUserGameDataByUserId(userId);
+    public UserGameData updateUserGameData(TimerSession savedTimerSession){
+        UserGameData oldUserGameData = getUserGameDataByUserId(savedTimerSession.getUserId());
         UserGameData updatedUserGameData = userGameDataUtility.updateUserGameData(oldUserGameData, savedTimerSession);
         UserGameData savedUserGameData = userGameDataRepository.save(updatedUserGameData);
-        log.info("Updated UserGameData for {}", userId);
+        log.info("Updated UserGameData for {}", savedTimerSession.getUserId());
         return savedUserGameData;
     }
 

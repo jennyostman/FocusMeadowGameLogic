@@ -20,12 +20,11 @@ public class TimerAdapter {
     /**
      * Updates a users game data object by adding a new timer session
      * @param timer, timer session data
-     * @param userId, a users id
      * @return UserGameData
      */
-    public UserGameData updatesUserGameData(final Timer timer, String userId){
-        TimerSession savedTimerSession = timerService.saveTimerSession(timer, userId);
-        UserGameData savedUserGameData = userGameDataService.updateUserGameData(savedTimerSession, userId);
+    public UserGameData updatesUserGameData(final Timer timer){
+        TimerSession savedTimerSession = timerService.saveTimerSession(timer);
+        UserGameData savedUserGameData = userGameDataService.updateUserGameData(savedTimerSession);
         return savedUserGameData;
     }
 

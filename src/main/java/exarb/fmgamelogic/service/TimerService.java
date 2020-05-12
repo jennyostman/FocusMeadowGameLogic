@@ -1,6 +1,5 @@
 package exarb.fmgamelogic.service;
 
-import exarb.fmgamelogic.enums.FlowerType;
 import exarb.fmgamelogic.event.EventDispatcher;
 import exarb.fmgamelogic.event.TimerCountWorkEvent;
 import exarb.fmgamelogic.exceptions.TimerSessionException;
@@ -46,11 +45,8 @@ public class TimerService {
      * @return TimerSession
      */
     @Transactional
-    public TimerSession saveTimerSession(final Timer timer, String userId) {
-        // TODO: Väljer blomma att plantera här just nu
-        timer.setFlowerToPlant(FlowerType.SUNFLOWER);
-
-        TimerSession timerSession = convertToTimerSession(timer, userId);
+    public TimerSession saveTimerSession(final Timer timer) {
+        TimerSession timerSession = convertToTimerSession(timer);
         TimerSession savedTimerSession = timerRepository.save(timerSession);
         eventDispatcher.send(new TimerCountWorkEvent(savedTimerSession.getId(), savedTimerSession.getUserId()));
         log.info("TimerCountWorkEvent message was sent");
@@ -60,11 +56,10 @@ public class TimerService {
     /**
      * Converts a Timer object to a TimerSession object
      * @param timer timer session data
-     * @param userId a users id
      * @return TimerSession
      */
-    private TimerSession convertToTimerSession(final Timer timer, String userId){
-        return new TimerSession(userId, timer.getTime(),
+    private TimerSession convertToTimerSession(final Timer timer){
+        return new TimerSession(timer.getUserId(), timer.getTime(),
                 timer.getSessionType(), timer.isInterrupted(),
                 timer.getFlowerToPlant());
     }
