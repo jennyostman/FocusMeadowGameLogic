@@ -1,6 +1,9 @@
 package exarb.fmgamelogic.service;
 
+import exarb.fmgamelogic.enums.FlowerType;
+import exarb.fmgamelogic.exceptions.FlowerException;
 import exarb.fmgamelogic.exceptions.UserGameDataException;
+import exarb.fmgamelogic.model.Flower;
 import exarb.fmgamelogic.model.TimerSession;
 import exarb.fmgamelogic.model.User;
 import exarb.fmgamelogic.model.UserGameData;
@@ -10,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -57,6 +62,33 @@ public class UserGameDataService {
         else {
             log.info("No UserGameData was found for id {}", userId);
             throw new UserGameDataException("Game data was not found");
+        }
+    }
+
+    /**
+     * Buys a flower and adds it to the users list of flowers
+     * that is possible to choose from when running the timer.
+     * @param allFlowers all flowers that is possible to buy
+     * @param userId a users id
+     * @param flowerType a flowers enum type
+     * @return UserGameData
+     */
+    public UserGameData buyFlower(Map<FlowerType, Flower> allFlowers, String userId, FlowerType flowerType){
+        UserGameData userGameData = getUserGameDataByUserId(userId);
+        int costForFlower = allFlowers.get(flowerType).getPrice();
+        int usersAmountOfCoins = userGameData.getCoins();
+
+        if (costForFlower <= usersAmountOfCoins) {
+            List<FlowerType> usersTimerFlowers = userGameData.getChoosableFlowers();
+            usersTimerFlowers.add(flowerType);
+            userGameData.setChoosableFlowers(usersTimerFlowers);
+            userGameData.setCoins(usersAmountOfCoins-costForFlower);
+            log.info("Game data updated when buying a new flower for user {}", userId);
+            return userGameDataRepository.save(userGameData);
+        }
+        else {
+            log.info("User did not have enough money to buy a new flower");
+            throw new FlowerException("Price was too high");
         }
     }
 
