@@ -27,4 +27,12 @@ public class Timer {
         this.sessionType = sessionType;
         this.interrupted = interrupted;
     }
+
+    public Timer(String userId, int time, SessionType sessionType, boolean interrupted, FlowerType flowerToPlant) {
+        this.userId = userId;
+        this.time = time;
+        this.sessionType = sessionType;
+        this.interrupted = interrupted;
+        this.flowerToPlant = flowerToPlant;
+    }
 }
