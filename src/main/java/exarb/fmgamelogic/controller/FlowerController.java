@@ -51,7 +51,7 @@ public class FlowerController {
      * @param userId a users id
      * @return ResponseEntity<UserGameData>
      */
-    @PostMapping(value = "/buy/{flowerType}/{userId}", consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/buy/{flowerType}/{userId}")
     public ResponseEntity<UserGameData> buyFlower(@PathVariable FlowerType flowerType,
                                                   @PathVariable String userId) {
         return ResponseEntity.ok().body(flowerAdapter.buyFlower(flowerType, userId));
