@@ -30,8 +30,8 @@ public class FlowerService {
         List<AllAvailableFlowers> allFlowers = flowerRepository.findAll();
         if (allFlowers.size() > 0){
             AllAvailableFlowers flowersUsersCanBuy = allFlowers.get(0);
-            flowersUsersCanBuy.getFlowerToBuyMap().put(flower.getFlowerType(), flower);
-            return flowerRepository.save(flowersUsersCanBuy).getFlowerToBuyMap();
+            flowersUsersCanBuy.getFlowersToBuy().put(flower.getFlowerType(), flower);
+            return flowerRepository.save(flowersUsersCanBuy).getFlowersToBuy();
         }
         else {
             log.info("Error when getting all the flowers from the database");
@@ -46,7 +46,7 @@ public class FlowerService {
     public Map<FlowerType, Flower> getAllFlowers(){
         Optional<AllAvailableFlowers> flowerMapObj = flowerRepository.findAll().stream().findFirst();
         if (flowerMapObj.isPresent()){
-            return flowerMapObj.get().getFlowerToBuyMap();
+            return flowerMapObj.get().getFlowersToBuy();
         }
         else {
             log.info("Error when getting all the flowers from the database");
