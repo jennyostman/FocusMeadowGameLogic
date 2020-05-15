@@ -11,6 +11,6 @@ import java.util.Map;
 public class AllAvailableFlowers {
 
     private String id;
-    private Map<FlowerType, Flower> flowerToBuyMap;
+    private Map<FlowerType, Flower> flowersToBuy;
 
 }

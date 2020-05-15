@@ -19,9 +19,7 @@ public class UserGameData {
     private List<FlowerType> focusTimeFlowers;
     private List<FlowerType> meadow;
     private int coins;
-    // private List<Achievement> achievements;  // Lista med de man tilldelats
     private List<FlowerType> choosableFlowers;
-    // Så att man uppdaterar den som är för dagen, och kan radera den som är för igår.
     private Date updated;
     private int earnedHours;
     private int earnedMinutes;
