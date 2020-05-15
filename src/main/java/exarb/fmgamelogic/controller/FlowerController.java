@@ -29,7 +29,7 @@ public class FlowerController {
      * Gets all flower that are possible to buy
      * @return ResponseEntity<Map<FlowerType, Flower>>
      */
-    @GetMapping(value = "/all")
+    @GetMapping(value = "/all/")
     public ResponseEntity<Map<FlowerType, Flower>> getAllFlowers(){
         return ResponseEntity.ok().body(flowerService.getAllFlowers());
     }
