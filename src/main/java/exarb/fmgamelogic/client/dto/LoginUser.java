@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-
+/**
+ * Dto containing user data
+ */
 @RequiredArgsConstructor
 @Getter
 @ToString

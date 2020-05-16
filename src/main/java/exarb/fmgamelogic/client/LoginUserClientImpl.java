@@ -21,6 +21,12 @@ public class LoginUserClientImpl implements LoginUserClient {
         this.userHost = userHost;
     }
 
+
+    /**
+     * Makes a GET call to the user-service to retrieve information about the user
+     * @param userId a users id
+     * @return LoginUser
+     */
     @Override
     public LoginUser retrieveUserById(String userId) {
         return restTemplate.getForObject(userHost + "/users/user/" + userId, LoginUser.class);

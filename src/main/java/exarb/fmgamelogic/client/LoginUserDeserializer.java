@@ -10,10 +10,18 @@ import exarb.fmgamelogic.client.dto.LoginUser;
 
 import java.io.IOException;
 
-/**
- * Deserializes a User coming from the User service into Gamelogics version of User
- */
+
 public class LoginUserDeserializer extends JsonDeserializer<LoginUser> {
+
+    /**
+     * Deserializes a User object coming from the User service into Gamelogics version of User,
+     * and allows to create a new object containing only the necessary variables.
+     * @param jsonParser provides access to JSON data
+     * @param deserializationContext context for deserialization
+     * @return LoginUser
+     * @throws IOException
+     * @throws JsonProcessingException
+     */
     @Override
     public LoginUser deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
         ObjectCodec oc = jsonParser.getCodec();

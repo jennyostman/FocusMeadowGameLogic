@@ -4,6 +4,9 @@ import exarb.fmgamelogic.enums.FlowerType;
 import lombok.Data;
 
 
+/**
+ * Model for a flower object
+ */
 @Data
 public class Flower {
 

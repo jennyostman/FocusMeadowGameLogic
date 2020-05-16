@@ -30,7 +30,7 @@ public class RabbitMQConfiguration implements RabbitListenerConfigurer {
     /**
      * The default RabbitTemplate is overridden and replaced so
      * that it uses the JSON message converter
-     * @param connectionFactory
+     * @param connectionFactory factory for creating connections
      * @return RabbitTemplate
      */
     @Bean
@@ -54,26 +54,26 @@ public class RabbitMQConfiguration implements RabbitListenerConfigurer {
      * @return TopicExchange
      */
     @Bean
-    public TopicExchange userExchange(@Value("${user.exchange}") final String exchangeName) {
-        return new TopicExchange(exchangeName);
+    public TopicExchange userExchange(@Value("${user.exchange}") final String userExchange) {
+        return new TopicExchange(userExchange);
     }
 
     /**
      * Creates a durable Queue for user events.
-     * @param queueName
-     * @return
+     * @param userQueue queue name
+     * @return Queue
      */
     @Bean
-    public Queue userQueue (@Value("${user.queue}") final String queueName) {
-        return new Queue(queueName, true);
+    public Queue userQueue (@Value("${user.queue}") final String userQueue) {
+        return new Queue(userQueue, true);
     }
 
     /**
      * Binds the topic exchange and the queue together.
-     * @param queue
-     * @param userExchange
-     * @param routingKey
-     * @return
+     * @param queue the userQueue
+     * @param userExchange a topic exchange bean for the userExchange
+     * @param routingKey a message attribute the exchange uses to know how to route the message to queues
+     * @return Binding
      */
     @Bean
     Binding binding(final Queue queue, final TopicExchange userExchange,
@@ -83,7 +83,7 @@ public class RabbitMQConfiguration implements RabbitListenerConfigurer {
 
     /**
      * Creating a converter from JSON
-     * @return
+     * @return MappingJackson2MessageConverter
      */
     @Bean
     public MappingJackson2MessageConverter consumerJackson2MessageConverter() {
@@ -92,7 +92,7 @@ public class RabbitMQConfiguration implements RabbitListenerConfigurer {
 
     /**
      * Method that customizes how the message payload will be converted from serialized to a typed object.
-     * @return
+     * @return DefaultMessageHandlerMethodFactory
      */
     @Bean
     public DefaultMessageHandlerMethodFactory messageHandlerMethodFactory() {
@@ -103,7 +103,7 @@ public class RabbitMQConfiguration implements RabbitListenerConfigurer {
 
     /**
      * Registering a RabbitListenerEndpoint that will use a customized MessageHandlerMethodFactory
-     * @param registrar
+     * @param registrar helper bean for registering RabbitListenerEndpoint
      */
     @Override
     public void configureRabbitListeners(final RabbitListenerEndpointRegistrar registrar) {

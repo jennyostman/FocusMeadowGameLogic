@@ -22,7 +22,7 @@ public class EventDispatcher {
 
     /**
      * Converts and sends theTimerCountWorkEvent
-     * @param timerCountWorkEvent
+     * @param timerCountWorkEvent a timerCount event
      */
     public void send(final TimerCountWorkEvent timerCountWorkEvent) {
         rabbitTemplate.convertAndSend(timerExchange, timerCompletedRoutingKey, timerCountWorkEvent);

@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
 
+/**
+ * Model for object with all flowers
+ */
 @Data
 @Document("allFlowers")
 public class AllAvailableFlowers {

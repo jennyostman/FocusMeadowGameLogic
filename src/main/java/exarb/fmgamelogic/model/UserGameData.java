@@ -7,7 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * Model for a users game data
+ */
 @Data
 @Document("userGameData")
 public class UserGameData {
