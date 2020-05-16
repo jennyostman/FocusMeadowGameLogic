@@ -1,6 +1,6 @@
 package exarb.fmgamelogic.service;
 
-import exarb.fmgamelogic.client.dto.LoginUser;
+import exarb.fmgamelogic.client.dto.RegisteredUser;
 import exarb.fmgamelogic.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     /**
-     * converts LoginUser object to User object
-     * @param loginUser a loginUser object
+     * converts RegisteredUser object to User object
+     * @param registeredUser a registeredUser object
      * @return User
      */
-    public User fromLoginUserToUser(LoginUser loginUser){
-        return new User(loginUser.getId(), loginUser.getUserName());
+    public User fromRegisteredUserToUser(RegisteredUser registeredUser){
+        return new User(registeredUser.getId(), registeredUser.getUserName());
     }
 
 }

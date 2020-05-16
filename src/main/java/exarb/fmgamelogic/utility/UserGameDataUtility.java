@@ -44,7 +44,6 @@ public class UserGameDataUtility {
      * @return UserGameData
      */
     public UserGameData updateUserGameData(UserGameData oldUserGameData, TimerSession savedTimerSession){
-        System.out.println("userGameData: " + oldUserGameData.toString());
 
         UserGameData userGameData = prepareUserGameDataForNewDay(oldUserGameData);
 
@@ -82,7 +81,6 @@ public class UserGameDataUtility {
             userGameData.setMeadow(new ArrayList<>());
             userGameData.setEarnedHours(0);
             userGameData.setEarnedMinutes(0);
-            System.out.println("userGameData efter nollställning: " + userGameData.toString());
         }
         return userGameData;
     }
@@ -94,13 +92,7 @@ public class UserGameDataUtility {
      */
     public boolean isUpdatedToday(UserGameData userGameData){
         LocalDate lastUpdatedDate = convertToLocalDateViaMilisecond(userGameData.getUpdated());
-
-        // Test
-        // lastUpdatedDate = LocalDate.of(2017, 10, 28);
-
         LocalDate todaysDate = LocalDate.now();
-        System.out.println("lastUpdatedDate: " + lastUpdatedDate);
-        System.out.println("todaysDate: " + todaysDate);
         return lastUpdatedDate.equals(todaysDate);
     }
 
@@ -148,7 +140,7 @@ public class UserGameDataUtility {
      * @return List<FlowerType>
      */
     private List<FlowerType> addItemsToMeadow(List<FlowerType> newFocusTimeFlowers){
-        // TODO: ta bort hårdkodning
+        // TODO: ta bort hårdkodning när ängens storlek kan ändras
         int x = 8;
         int sizeOfMeadow = x * x;
         List<FlowerType> meadow = new ArrayList<>();

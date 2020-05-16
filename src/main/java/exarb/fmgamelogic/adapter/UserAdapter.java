@@ -1,7 +1,7 @@
 package exarb.fmgamelogic.adapter;
 
-import exarb.fmgamelogic.client.LoginUserClient;
-import exarb.fmgamelogic.client.dto.LoginUser;
+import exarb.fmgamelogic.client.RegisteredUserClient;
+import exarb.fmgamelogic.client.dto.RegisteredUser;
 import exarb.fmgamelogic.exceptions.UserGameDataException;
 import exarb.fmgamelogic.model.User;
 import exarb.fmgamelogic.service.UserGameDataService;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserAdapter {
 
-    private final LoginUserClient loginUserClient;
+    private final RegisteredUserClient registeredUserClient;
     private final UserGameDataService userGameDataService;
     private final UserService userService;
 
@@ -25,8 +25,8 @@ public class UserAdapter {
      */
     public void createUserGameDataForNewUser(String userId) {
         try {
-            LoginUser loginUser = getLoginUserFromUserService(userId);
-            User user = userService.fromLoginUserToUser(loginUser);
+            RegisteredUser registeredUser = getRegisteredUserFromUserService(userId);
+            User user = userService.fromRegisteredUserToUser(registeredUser);
             userGameDataService.createNewUserGameData(user);
             log.info("created new UserGameData for {}", userId);
         } catch (Exception e){
@@ -38,11 +38,11 @@ public class UserAdapter {
     /**
      * Calls user service to get a user by userId
      * @param userId a users id
-     * @return LoginUser
+     * @return RegisteredUser
      */
-    private LoginUser getLoginUserFromUserService(String userId){
-        LoginUser loginUser = loginUserClient.retrieveUserById(userId);
-        log.info("loginUser {} received from User service", loginUser.getUserName());
-        return loginUser;
+    private RegisteredUser getRegisteredUserFromUserService(String userId){
+        RegisteredUser registeredUser = registeredUserClient.retrieveUserById(userId);
+        log.info("registeredUser {} received from User service", registeredUser.getUserName());
+        return registeredUser;
     }
 }
