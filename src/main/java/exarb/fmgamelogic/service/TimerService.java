@@ -48,8 +48,10 @@ public class TimerService {
     public TimerSession saveTimerSession(final Timer timer) {
         TimerSession timerSession = convertToTimerSession(timer);
         TimerSession savedTimerSession = timerRepository.save(timerSession);
-        eventDispatcher.send(new TimerCountWorkEvent(savedTimerSession.getId(), savedTimerSession.getUserId()));
-        log.info("TimerCountWorkEvent message was sent");
+        if (!savedTimerSession.isInterrupted()){
+            eventDispatcher.send(new TimerCountWorkEvent(savedTimerSession.getId(), savedTimerSession.getUserId()));
+            log.info("TimerCountWorkEvent message was sent");
+        }
         return savedTimerSession;
     }
 
